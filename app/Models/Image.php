@@ -16,11 +16,6 @@ class Image extends Model
         'product_id',
     ];
 
-    public function users()
-    {
-        return $this->hasMany(User::class);
-    }
-
     public function event()
     {
         return $this->belongsTo(Event::class);

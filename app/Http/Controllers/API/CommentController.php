@@ -13,7 +13,21 @@ class CommentController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            $comment = Comment::with(['users'])->get();
+            return response()->json([
+                'code' => 200,
+                'status' => 'success',
+                'data' => $comment,
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'code' => 404,
+                'status' => 'error',
+                'message' =>'Erreur dans la liste des commentaires',
+                'error' => $e,
+            ]);
+        }
     }
 
     /**
@@ -21,7 +35,27 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $request->validate([
+                'comment_content' => 'required|min:10',
+            ]);
+
+            $comment = Comment::create(array_merge($request->all(), ['user_id'=> Auth::user()->id]));
+
+            return response()->json([
+                'code' => 201,
+                'status' => 'success',
+                'data' => $comment,
+                'message' => 'Ajout de votre commentaire',
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'code' => 404,
+                'status' => 'error',
+                'message' => 'Erreur dans l\'ajout du commentaire',
+                'error' => $e,
+            ]);
+        }
     }
 
     /**
@@ -29,7 +63,20 @@ class CommentController extends Controller
      */
     public function show(Comment $comment)
     {
-        //
+        try {
+            return response()->json([
+                'code' => 200,
+                'status' => 'success',
+                'data' => $comment,
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                 'code' => 404,
+                 'status' => 'error',
+                 'message' => 'Erreur dans l\'affichage',
+                 'error' => $e
+            ]);
+        }
     }
 
     /**

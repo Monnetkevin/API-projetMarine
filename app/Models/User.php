@@ -23,8 +23,8 @@ class User extends Authenticatable implements JWTSubject
         'email',
         'password',
         'phone_number',
+         'image_name',
         'role_id',
-        'image_id',
     ];
 
     /**
@@ -69,11 +69,6 @@ class User extends Authenticatable implements JWTSubject
     public function events()
     {
         return $this->hasMany(Event::class);
-    }
-
-    public function image()
-    {
-        return $this->belongsTo(Image::class);
     }
 
     public function products()

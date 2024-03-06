@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use App\Models\User;
+use Laravolt\Avatar\Avatar;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class AuthController extends Controller
 {
@@ -27,6 +29,7 @@ class AuthController extends Controller
                 'email' => $request['email'],
                 'phone_number' =>$request['phone_number'],
                 'password' => bcrypt($request['password']),
+                'image_name' => Avatar::create($request->first_name, $request->last_name)->toBase64(),
             ]);
             return response()->json([
                 'meta' => [
@@ -45,7 +48,7 @@ class AuthController extends Controller
         } catch (Exception $e)
         {
             return response()->json([
-                'code' => 500,
+                'code' => 404,
                 'status'=> 'error',
                 'message' => 'Erreur lors de l\'enregistrement',
                 'error' => $e
@@ -92,7 +95,7 @@ class AuthController extends Controller
                 'status' => 'error',
                 'message' => 'Erreur dans la connexion',
                 'error' => $e,
-            ], 500);
+            ], 404);
         }
     }
 
@@ -118,7 +121,7 @@ class AuthController extends Controller
                 'status' => 'success',
                 'message' => 'Erreur dans la déconnexion',
                 'error' => $e
-            ],500);
+            ],404);
         }
     }
 
