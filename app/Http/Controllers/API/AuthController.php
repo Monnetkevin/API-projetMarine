@@ -4,10 +4,11 @@ namespace App\Http\Controllers\API;
 
 use Exception;
 use App\Models\User;
-use Laravolt\Avatar\Avatar;
+// use Laravolt\Avatar\Avatar;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use PHPOpenSourceSaver\JWTAuth\JWTAuth;
+use Illuminate\Support\Facades\Auth;
+use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -86,17 +87,17 @@ class AuthController extends Controller
                 ]);
             } else {
                 return response()->json([
-                    'code' => 401,
                     'status' => 'error',
-                    'message' => 'Pas autorisé',
-                ], 401);
+                    'message' => 'Erreur dans la connexion',
+                ]);
             }
         } catch (Exception $e) {
             return response()->json([
+                'code' => 404,
                 'status' => 'error',
                 'message' => 'Erreur dans la connexion',
                 'error' => $e,
-            ], 404);
+            ]);
         }
     }
 
@@ -105,7 +106,7 @@ class AuthController extends Controller
         try {
             $token = JWTAuth::getToken();
             $invalidate = JWTAuth::invalidate($token);
-            if (invalidate) {
+            if ($invalidate) {
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Déconnexion avec succès',

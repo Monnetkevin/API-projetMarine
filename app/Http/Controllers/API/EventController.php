@@ -28,7 +28,7 @@ class EventController extends Controller
                 'code' => 404,
                 'status' => 'error',
                 'message' => 'Erreur dans la liste des événements',
-                'error' => $e,
+                'error' => $e->getMessage(),
             ]);
         }
     }
@@ -86,7 +86,7 @@ class EventController extends Controller
                 'code' => 404,
                 'status' => 'error',
                 'message' => 'Erreur dans l\'affichage',
-                'error' => $e
+                'error' => $e->getMessage(),
             ]);
         }
     }

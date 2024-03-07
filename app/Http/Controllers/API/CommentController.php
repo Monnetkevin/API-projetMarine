@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use Exception;
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,7 +17,14 @@ class CommentController extends Controller
     public function index()
     {
         try {
-            $comment = Comment::with(['users'])->get();
+
+            $comment = DB::table('comments')
+                ->join('users', 'comments.user_id', '=', 'users.id')
+                ->leftJoin('products', 'comments.product_id', '=', 'products.id')
+                ->leftJoin('events', 'comments.event_id', '=', 'events.id')
+                ->select('comments.*', 'users.first_name', 'users.last_name', 'users.image_name', 'products.product_name', 'events.event_name')
+                ->get();
+
             return response()->json([
                 'code' => 200,
                 'status' => 'success',

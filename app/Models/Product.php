@@ -14,7 +14,6 @@ class Product extends Model
         'product_content',
         'price',
         'quantity',
-        'user_id',
         'category_id',
     ];
 
@@ -23,7 +22,7 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function comments ()
+    public function comments()
     {
         return $this->hasMany(Comment::class);
     }
@@ -31,10 +30,5 @@ class Product extends Model
     public function images()
     {
         return $this->hasMany(Image::class);
-    }
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
     }
 }

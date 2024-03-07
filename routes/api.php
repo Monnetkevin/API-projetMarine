@@ -21,9 +21,9 @@ use App\Http\Controllers\API\CategoryController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 // ROUTE AUTH
 Route::controller(AuthController::class)->group(function () {

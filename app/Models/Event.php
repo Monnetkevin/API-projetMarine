@@ -14,13 +14,8 @@ class Event extends Model
         'event_content',
         'start_date',
         'end_date',
-        // 'user_id',
-    ];
 
-    // public function user()
-    // {
-    //     return $this->belongsTo(User::class);
-    // }
+    ];
 
     public function images()
     {
@@ -30,6 +25,5 @@ class Event extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class);
-
     }
 }

@@ -5,7 +5,9 @@ namespace App\Http\Controllers\API;
 use Exception;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -15,7 +17,15 @@ class ProductController extends Controller
     public function index()
     {
         try {
-            $products = Product::with(['images'])->get();
+            $products = Product::with(['images'])
+                ->get()
+                ->toArray();
+
+            // $products = DB::table('products')
+            //     ->join('images', 'products.id', '=', 'images.product_id')
+            //     ->select('products.*', 'images.image_name')
+            //     ->get();
+
             return response()->json([
                 'code' => 200,
                 'status' => 'success',
@@ -36,20 +46,29 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         try {
-            $request->validate([
-                'product_name' => 'required|string|min:3|max:50|unique:products',
-                'product_content' => 'required',
-                'price' => 'required|integer',
-                'quantity' => 'required|integer',
-            ]);
-            $product = Product::create($request->all());
+            if (Auth::user()->role_id === 2) {
+                $request->validate([
+                    'product_name' => 'required|string|min:3|max:50|unique:products',
+                    'product_content' => 'required',
+                    'price' => 'required|integer',
+                    'quantity' => 'required|integer',
+                    'category_id' => 'required',
+                ]);
+                $product = Product::create($request->all());
 
-            return response()->json([
-                'code' => 201,
-                'status' => 'success',
-                'data' => $product,
-                'message' => 'Ajout du produit avec succès '
-            ]);
+                return response()->json([
+                    'code' => 201,
+                    'status' => 'success',
+                    'data' => $product,
+                    'message' => 'Ajout du produit avec succès '
+                ]);
+            } else {
+                return response()->json([
+                    'code' => 401,
+                    'status' => 'error',
+                    'message' => 'Pas autorisé',
+                ]);
+            }
         } catch (Exception $e) {
             return response()->json([
                 'code' => 404,
@@ -87,20 +106,29 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         try {
-            $request->validate([
-                'product_name' => 'required|string|min:3|max:50|unique:products',
-                'product_content' => 'required',
-                'price' => 'required|integer',
-                'quantity' => 'required|integer',
-            ]);
-            $product->update($request->all());
+            if (Auth::user()->role_id === 2) {
+                $request->validate([
+                    'product_name' => 'required|string|min:3|max:50|unique:products',
+                    'product_content' => 'required',
+                    'price' => 'required|integer',
+                    'quantity' => 'required|integer',
+                    'category_id' => 'required',
+                ]);
+                $product->update($request->all());
 
-            return response()->json([
-                'code' => 201,
-                'status' => 'success',
-                'data' => $product,
-                'message' => 'Mise à jour du produit avec succès'
-            ]);
+                return response()->json([
+                    'code' => 201,
+                    'status' => 'success',
+                    'data' => $product,
+                    'message' => 'Mise à jour du produit avec succès'
+                ]);
+            } else {
+                return response()->json([
+                    'code' => 401,
+                    'status' => 'error',
+                    'message' => 'Pas autorisé',
+                ]);
+            }
         } catch (Exception $e) {
             return response()->json([
                 'code' => 404,
