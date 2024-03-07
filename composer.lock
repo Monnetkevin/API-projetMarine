@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f20c3d0f776016fca93a72299c4d63f3",
+    "content-hash": "4b4f9c54ca232782bf636f60ce8e0311",
     "packages": [
         {
             "name": "brick/math",
@@ -1044,6 +1044,79 @@
                 }
             ],
             "time": "2023-12-03T19:50:20+00:00"
+        },
+        {
+            "name": "halimzidoune/laravel-postman-api",
+            "version": "v1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/halimzidoune/laravel-postman-api.git",
+                "reference": "8212b5b453422341164c6c26d59f2002bd9b55d2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/halimzidoune/laravel-postman-api/zipball/8212b5b453422341164c6c26d59f2002bd9b55d2",
+                "reference": "8212b5b453422341164c6c26d59f2002bd9b55d2",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^10.0",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.14.0"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^7.9",
+                "nunomaduro/larastan": "^2.0.1",
+                "orchestra/testbench": "^8.0",
+                "pestphp/pest": "^2.0",
+                "pestphp/pest-plugin-arch": "^2.0",
+                "pestphp/pest-plugin-laravel": "^2.0",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "spatie/laravel-ray": "^1.26"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Halimzidoune\\LaravelPostmanApi\\LaravelPostmanApiServiceProvider"
+                    ],
+                    "aliases": {
+                        "LaravelPostmanApi": "Halimzidoune\\LaravelPostmanApi\\Facades\\LaravelPostmanApi"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Halimzidoune\\LaravelPostmanApi\\": "src/",
+                    "Halimzidoune\\LaravelPostmanApi\\Database\\Factories\\": "database/factories/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "zidoune halim",
+                    "email": "halimzidoune@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "This package allow to export all API routes from your laravel project to be used in postman and make tests manualy.",
+            "homepage": "https://github.com/halimzidoune/laravel-postman-api",
+            "keywords": [
+                "halimzidoune",
+                "laravel",
+                "laravel-postman-api"
+            ],
+            "support": {
+                "issues": "https://github.com/halimzidoune/laravel-postman-api/issues",
+                "source": "https://github.com/halimzidoune/laravel-postman-api/tree/v1.0.3"
+            },
+            "time": "2023-04-21T22:01:31+00:00"
         },
         {
             "name": "intervention/image",
@@ -3651,6 +3724,66 @@
                 }
             ],
             "time": "2023-11-08T05:53:05+00:00"
+        },
+        {
+            "name": "spatie/laravel-package-tools",
+            "version": "1.16.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-package-tools.git",
+                "reference": "59db18c2e20d49a0b6d447bb1c654f6c123beb9e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-package-tools/zipball/59db18c2e20d49a0b6d447bb1c654f6c123beb9e",
+                "reference": "59db18c2e20d49a0b6d447bb1c654f6c123beb9e",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^9.28|^10.0|^11.0",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.5",
+                "orchestra/testbench": "^7.7|^8.0",
+                "pestphp/pest": "^1.22",
+                "phpunit/phpunit": "^9.5.24",
+                "spatie/pest-plugin-test-time": "^1.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\LaravelPackageTools\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Tools for creating Laravel packages",
+            "homepage": "https://github.com/spatie/laravel-package-tools",
+            "keywords": [
+                "laravel-package-tools",
+                "spatie"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/laravel-package-tools/issues",
+                "source": "https://github.com/spatie/laravel-package-tools/tree/1.16.3"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-03-07T07:35:57+00:00"
         },
         {
             "name": "symfony/console",

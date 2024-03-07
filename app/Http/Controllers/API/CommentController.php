@@ -38,6 +38,8 @@ class CommentController extends Controller
         try {
             $request->validate([
                 'comment_content' => 'required|min:10',
+                'event_id' => 'nullable',
+                'product_id' => 'nullable',
             ]);
 
             $comment = Comment::create(array_merge($request->all(), ['user_id'=> Auth::user()->id]));
@@ -84,7 +86,35 @@ class CommentController extends Controller
      */
     public function update(Request $request, Comment $comment)
     {
-        //
+        try {
+             if(Auth::user()->id === $comment->user_id) {
+                $request->validate([
+                    'comment_content' =>'required',
+                    'event_id' => 'nullable',
+                    'product_id' => 'nullable',
+                ]);
+                $comment->update($request->all());
+                return response()->json([
+                    'code'=> 201,
+                    'status' => 'success',
+                    'data' => $comment,
+                    'message' => 'Mise à jour du commentaire avec succès'
+                ]);
+             } else {
+                    return response()->json([
+                        'code' => 401,
+                        'status' => 'error',
+                        'message' => 'Pas autorisé',
+                    ]);
+                }
+            } catch(Exception $e) {
+                return response()->json([
+                    'code' => 404,
+                    'status' => 'error',
+                    'message' => 'Erreur dans la suppression',
+                    'error' => $e,
+                ]);
+            }
     }
 
     /**
@@ -92,6 +122,28 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        //
+        try {
+            if(Auth::user()->id === $comment->user_id || Auth::user()->role_id === 2) {
+                $comment->delete();
+                return response()->json([
+                    'code' => 201,
+                    'status' => 'success',
+                    'message' => 'Suppression réussite'
+                ]);
+            } else {
+                return response()->json([
+                    'code' => 401,
+                    'status' => 'error',
+                    'message' => 'Pas autorisé',
+                ]);
+            }
+        } catch(Exception $e) {
+            return response()->json([
+                'code' => 404,
+                'status' => 'error',
+                'message' => 'Erreur dans la suppression',
+                'error' => $e,
+            ]);
+        }
     }
 }

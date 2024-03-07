@@ -37,19 +37,27 @@ class EventController extends Controller
     public function store(Request $request)
     {
         try {
-            $request->validate([
-            'event_name' => 'required|string|min:3|max:100',
-            'event_content' => 'required',
-            'start_date' =>'required|date',
-            'end_date' => 'required|date',
-        ]);
-        $event = Event::create($request->all());
-        return response()->json([
-            'code' => 201,
-            'status' => 'success',
-            'data' => $event,
-            'message' => 'Ajout de l\'événement avec succès'
-        ]);
+            if(Auth::user()->role_id === 2) {
+                $request->validate([
+                    'event_name' => 'required|string|min:3|max:100',
+                    'event_content' => 'required',
+                    'start_date' =>'required|date',
+                    'end_date' => 'required|date',
+                ]);
+                $event = Event::create($request->all());
+                return response()->json([
+                    'code' => 201,
+                    'status' => 'success',
+                    'data' => $event,
+                    'message' => 'Ajout de l\'événement avec succès'
+                ]);
+            } else {
+                return response()->json([
+                    'code' => 401,
+                    'status' => 'error',
+                    'message' => 'Pas autorisé',
+                ]);
+            }
         } catch (Exception $e) {
             return response()->json([
                 'code' => 404,
@@ -87,20 +95,28 @@ class EventController extends Controller
     public function update(Request $request, Event $event)
     {
         try {
-            $request->validate([
+            if(Auth::user()->role_id === 2) {
+                $request->validate([
                 'event_name' => 'required|string|min:3|max:100',
                 'event_content' => 'required',
                 'start_date' =>'required|date',
                 'end_date' => 'required|date',
-            ]);
-            $event->update($request->all());
+                ]);
+                $event->update($request->all());
 
-            return response()->json([
-                'code' => 201,
-                'status' => 'success',
-                'data' => $event,
-                'message'=> 'Mise à jour de l\'événement avec succès'
+                return response()->json([
+                    'code' => 201,
+                    'status' => 'success',
+                    'data' => $event,
+                    'message'=> 'Mise à jour de l\'événement avec succès'
             ]);
+            } else {
+                return response()->json([
+                    'code' => 401,
+                    'status' => 'error',
+                    'message' => 'Pas autorisé',
+                ]);
+            }
         } catch (Exception $e) {
             return response()->json([
                 'code' => 404,
@@ -117,12 +133,20 @@ class EventController extends Controller
     public function destroy(Event $event)
     {
         try {
-            $category->delete();
-            return response()->json([
-                'code' => 201,
-                'status' => 'success',
-                'message' => 'Suppression réussite'
-            ]);
+            if(Auth::user()->role_id === 2) {
+                $category->delete();
+                return response()->json([
+                    'code' => 201,
+                    'status' => 'success',
+                    'message' => 'Suppression réussite'
+                ]);
+            } else {
+                return response()->json([
+                    'code' => 401,
+                    'status' => 'error',
+                    'message' => 'Pas autorisé',
+                ]);
+            }
         } catch (Exception $e) {
             return response()->json([
                  'code' => 404,
