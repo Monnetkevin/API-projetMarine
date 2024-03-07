@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
+use Exception;
 use App\Models\Event;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
 {
@@ -17,7 +19,7 @@ class EventController extends Controller
             $event = Event::with(['images'])->get();
 
             return response()->json([
-                'code'=> 200,
+                'code' => 200,
                 'status' => 'success',
                 'data' => $event,
             ]);
@@ -37,11 +39,11 @@ class EventController extends Controller
     public function store(Request $request)
     {
         try {
-            if(Auth::user()->role_id === 2) {
+            if (Auth::user()->role_id === 2) {
                 $request->validate([
                     'event_name' => 'required|string|min:3|max:100',
                     'event_content' => 'required',
-                    'start_date' =>'required|date',
+                    'start_date' => 'required|date',
                     'end_date' => 'required|date',
                 ]);
                 $event = Event::create($request->all());
@@ -81,10 +83,10 @@ class EventController extends Controller
             ]);
         } catch (Exception $e) {
             return response()->json([
-                 'code' => 404,
-                 'status' => 'error',
-                 'message' => 'Erreur dans l\'affichage',
-                 'error' => $e
+                'code' => 404,
+                'status' => 'error',
+                'message' => 'Erreur dans l\'affichage',
+                'error' => $e
             ]);
         }
     }
@@ -95,12 +97,12 @@ class EventController extends Controller
     public function update(Request $request, Event $event)
     {
         try {
-            if(Auth::user()->role_id === 2) {
+            if (Auth::user()->role_id === 2) {
                 $request->validate([
-                'event_name' => 'required|string|min:3|max:100',
-                'event_content' => 'required',
-                'start_date' =>'required|date',
-                'end_date' => 'required|date',
+                    'event_name' => 'required|string|min:3|max:100',
+                    'event_content' => 'required',
+                    'start_date' => 'required|date',
+                    'end_date' => 'required|date',
                 ]);
                 $event->update($request->all());
 
@@ -108,8 +110,8 @@ class EventController extends Controller
                     'code' => 201,
                     'status' => 'success',
                     'data' => $event,
-                    'message'=> 'Mise à jour de l\'événement avec succès'
-            ]);
+                    'message' => 'Mise à jour de l\'événement avec succès'
+                ]);
             } else {
                 return response()->json([
                     'code' => 401,
@@ -133,8 +135,8 @@ class EventController extends Controller
     public function destroy(Event $event)
     {
         try {
-            if(Auth::user()->role_id === 2) {
-                $category->delete();
+            if (Auth::user()->role_id === 2) {
+                $event->delete();
                 return response()->json([
                     'code' => 201,
                     'status' => 'success',
@@ -149,10 +151,10 @@ class EventController extends Controller
             }
         } catch (Exception $e) {
             return response()->json([
-                 'code' => 404,
-                 'status' => 'error',
-                 'message' => 'Erreur dans la suppression',
-                 'error' => $e
+                'code' => 404,
+                'status' => 'error',
+                'message' => 'Erreur dans la suppression',
+                'error' => $e
             ]);
         }
     }

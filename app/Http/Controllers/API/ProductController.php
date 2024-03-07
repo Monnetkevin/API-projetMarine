@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
+use Exception;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class ProductController extends Controller
 {
@@ -16,7 +17,7 @@ class ProductController extends Controller
         try {
             $products = Product::with(['images'])->get();
             return response()->json([
-                'code'=> 200,
+                'code' => 200,
                 'status' => 'success',
                 'data' => $products,
             ]);
@@ -35,20 +36,20 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         try {
-         $request->validate([
-            'product_name' => 'required|string|min:3|max:50|unique:products',
-            'product_content' => 'required',
-            'price' => 'required|integer',
-            'quantity' => 'required|integer',
-        ]);
-        $product = Product::create($request->all());
+            $request->validate([
+                'product_name' => 'required|string|min:3|max:50|unique:products',
+                'product_content' => 'required',
+                'price' => 'required|integer',
+                'quantity' => 'required|integer',
+            ]);
+            $product = Product::create($request->all());
 
-        return response()->json([
-            'code' => 201,
-            'status' => 'success',
-            'data' => $product,
-            'message' => 'Ajout du produit avec succès '
-        ]);
+            return response()->json([
+                'code' => 201,
+                'status' => 'success',
+                'data' => $product,
+                'message' => 'Ajout du produit avec succès '
+            ]);
         } catch (Exception $e) {
             return response()->json([
                 'code' => 404,
@@ -72,10 +73,10 @@ class ProductController extends Controller
             ]);
         } catch (Exception $e) {
             return response()->json([
-                 'code' => 404,
-                 'status' => 'error',
-                 'message' => 'Erreur dans l\'affichage',
-                 'error' => $e
+                'code' => 404,
+                'status' => 'error',
+                'message' => 'Erreur dans l\'affichage',
+                'error' => $e
             ]);
         }
     }
@@ -98,7 +99,7 @@ class ProductController extends Controller
                 'code' => 201,
                 'status' => 'success',
                 'data' => $product,
-                'message'=> 'Mise à jour du produit avec succès'
+                'message' => 'Mise à jour du produit avec succès'
             ]);
         } catch (Exception $e) {
             return response()->json([
@@ -124,10 +125,10 @@ class ProductController extends Controller
             ]);
         } catch (Exception $e) {
             return response()->json([
-                 'code' => 404,
-                 'status' => 'error',
-                 'message' => 'Erreur dans la suppression',
-                 'error' => $e
+                'code' => 404,
+                'status' => 'error',
+                'message' => 'Erreur dans la suppression',
+                'error' => $e
             ]);
         }
     }

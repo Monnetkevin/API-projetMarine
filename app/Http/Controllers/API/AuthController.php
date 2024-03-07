@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\API;
 
+use Exception;
 use App\Models\User;
 use Laravolt\Avatar\Avatar;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use PHPOpenSourceSaver\JWTAuth\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -27,9 +29,10 @@ class AuthController extends Controller
                 'first_name' => $request['first_name'],
                 'last_name' => $request['last_name'],
                 'email' => $request['email'],
-                'phone_number' =>$request['phone_number'],
+                'phone_number' => $request['phone_number'],
                 'password' => bcrypt($request['password']),
-                'image_name' => Avatar::create($request->first_name, $request->last_name)->toBase64(),
+                'image_name' => 'defautl_avatar.png',
+                // 'image_name' => Avatar::create($request->first_name, $request->last_name)->toBase64(),
             ]);
             return response()->json([
                 'meta' => [
@@ -45,11 +48,10 @@ class AuthController extends Controller
                     ],
                 ],
             ]);
-        } catch (Exception $e)
-        {
+        } catch (Exception $e) {
             return response()->json([
                 'code' => 404,
-                'status'=> 'error',
+                'status' => 'error',
                 'message' => 'Erreur lors de l\'enregistrement',
                 'error' => $e
             ]);
@@ -67,7 +69,7 @@ class AuthController extends Controller
                 'email' => $request->email,
                 'password' => $request->password,
             ]);
-            if(token) {
+            if ($token) {
                 return response()->json([
                     'meta' => [
                         'code' => 200,
@@ -89,8 +91,7 @@ class AuthController extends Controller
                     'message' => 'Pas autorisé',
                 ], 401);
             }
-        } catch (Exception $e)
-        {
+        } catch (Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Erreur dans la connexion',
@@ -102,26 +103,25 @@ class AuthController extends Controller
     public function logout()
     {
         try {
-             $token = JWTAuth::getToken();
+            $token = JWTAuth::getToken();
             $invalidate = JWTAuth::invalidate($token);
-            if(invalidate) {
+            if (invalidate) {
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Déconnexion avec succès',
-                ],200);
+                ], 200);
             } else {
                 return response()->json([
-                    'status' =>'error',
+                    'status' => 'error',
                     'message' => 'Pas autorisé'
-                ],401);
+                ], 401);
             }
-        } catch (Exception $e)
-        {
+        } catch (Exception $e) {
             return response()->json([
                 'status' => 'success',
                 'message' => 'Erreur dans la déconnexion',
                 'error' => $e
-            ],404);
+            ], 404);
         }
     }
 

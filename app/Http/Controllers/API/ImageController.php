@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
+use Exception;
 use App\Models\Image;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class ImageController extends Controller
 {
@@ -13,38 +15,37 @@ class ImageController extends Controller
      */
     public function store(Request $request)
     {
-       try {
-        $request->validate([
-            'image_name' => 'required|image|mimes:jpeg,png,jpg,svg',
-            'event_id' => 'nullable',
-            'product_id' => 'nullable'
-        ]);
+        try {
+            $request->validate([
+                'image_name' => 'required|image|mimes:jpeg,png,jpg,svg',
+                'event_id' => 'nullable',
+                'product_id' => 'nullable'
+            ]);
 
-        $filename = "";
-        if($request->hasFile('image_name')) {
-            $filenameWithExt = $request->file('image_name')->getClientOriginalName();
-            $filenameWithoutExt = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            $extension = $request->file('image_name')->getClientOriginalExtension();
-            $filename = $filenameWithoutExt. '_'. time(). '.'.$extension;
-            $request->file('image_name')->storeAs('public/uploads', $filename);
+            $filename = "";
+            if ($request->hasFile('image_name')) {
+                $filenameWithExt = $request->file('image_name')->getClientOriginalName();
+                $filenameWithoutExt = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                $extension = $request->file('image_name')->getClientOriginalExtension();
+                $filename = $filenameWithoutExt . '_' . time() . '.' . $extension;
+                $request->file('image_name')->storeAs('public/uploads', $filename);
+            }
+            $image = Image::create(array_merge($request->all(), ['image_name' => $filename]));
+
+            return response()->json([
+                'code' => 201,
+                'status' => 'success',
+                'data' => $image,
+                'message' => 'Image ajoutée avec succès',
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'code' => 404,
+                'status' => 'error',
+                'message' => 'Erreur dans l\'ajout de l\'image',
+                'erroe' => $e,
+            ]);
         }
-        $image = Image::create(array_merge($request->all(), ['image_name' => $filename]));
-
-        return response()->json([
-            'code' => 201,
-            'status' => 'success',
-            'data' => $image,
-            'message' => 'Image ajoutée avec succès',
-        ]);
-
-       } catch (Exception $e) {
-        return response()->json([
-            'code' => 404,
-            'status' =>'error',
-            'message' => 'Erreur dans l\'ajout de l\'image',
-            'erroe' => $e,
-        ]);
-       }
     }
 
     /**
@@ -60,10 +61,10 @@ class ImageController extends Controller
             ]);
         } catch (Exception $e) {
             return response()->json([
-                 'code' => 404,
-                 'status' => 'error',
-                 'message' => 'Erreur dans l\'affichage',
-                 'error' => $e
+                'code' => 404,
+                'status' => 'error',
+                'message' => 'Erreur dans l\'affichage',
+                'error' => $e
             ]);
         }
     }
