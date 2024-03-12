@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use Exception;
+use App\Models\Image;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,22 +22,23 @@ class ProductController extends Controller
                 ->get()
                 ->toArray();
 
-            // $products = DB::table('products')
-            //     ->join('images', 'products.id', '=', 'images.product_id')
-            //     ->select('products.*', 'images.image_name')
-            //     ->get();
+            $lastProducts = Product::with(['images'])
+                ->latest()
+                ->take(3)
+                ->get();
 
             return response()->json([
                 'code' => 200,
                 'status' => 'success',
                 'data' => $products,
+                'lastProduct' => $lastProducts,
             ]);
         } catch (Exception $e) {
             return response()->json([
                 'code' => 404,
                 'status' => 'error',
                 'message' => 'Erreur dans la liste des événements',
-                'error' => $e,
+                'error' => $e->getMessage(),
             ]);
         }
     }
@@ -74,7 +76,7 @@ class ProductController extends Controller
                 'code' => 404,
                 'status' => 'error',
                 'message' => 'Erreur dans l\'ajout',
-                'error' => $e
+                'error' => $e->getMessage(),
             ]);
         }
     }
@@ -85,17 +87,22 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         try {
+
+            $images = Image::where('product_id', $product->id)
+                ->get();
+
             return response()->json([
                 'code' => 200,
                 'status' => 'success',
                 'data' => $product,
+                'image' => $images,
             ]);
         } catch (Exception $e) {
             return response()->json([
                 'code' => 404,
                 'status' => 'error',
                 'message' => 'Erreur dans l\'affichage',
-                'error' => $e
+                'error' => $e->getMessage()
             ]);
         }
     }
@@ -134,7 +141,7 @@ class ProductController extends Controller
                 'code' => 404,
                 'status' => 'error',
                 'message' => 'Erreur dans la modification',
-                'error' => $e
+                'error' => $e->getMessage(),
             ]);
         }
     }
@@ -156,8 +163,28 @@ class ProductController extends Controller
                 'code' => 404,
                 'status' => 'error',
                 'message' => 'Erreur dans la suppression',
-                'error' => $e
+                'error' => $e->getMessage(),
             ]);
         }
     }
+
+    // public function lastProduct()
+    // {
+    //     try {
+    //         $lastProducts = Product::with(['images'])->latest()->take(3)->get();
+
+    //         return response()->json([
+    //             'code' => 200,
+    //             'status' => 'success',
+    //             'data' => $lastProducts,
+    //         ]);
+    //     } catch (Exception $e) {
+    //         return response()->json([
+    //             'code' => 404,
+    //             'status' => 'error',
+    //             'message' => 'Erreur dans la liste des événements',
+    //             'error' => $e->getMessage(),
+    //         ]);
+    //     }
+    // }
 }

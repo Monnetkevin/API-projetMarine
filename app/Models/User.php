@@ -23,7 +23,7 @@ class User extends Authenticatable implements JWTSubject
         'email',
         'password',
         'phone_number',
-         'image_name',
+        'image_name',
         'role_id',
     ];
 
@@ -53,7 +53,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function getJWTCustomClaims()
     {
-        return [];
+        return ["role" => $this->role, "first_name" => $this->first_name, "last_name" => $this->last_name, "email" => $this->email];
     }
 
     public function addresses()
@@ -80,5 +80,4 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Comment::class);
     }
-
 }

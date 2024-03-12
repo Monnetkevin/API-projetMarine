@@ -4,7 +4,9 @@ namespace App\Http\Controllers\API;
 
 use Exception;
 use App\Models\Event;
+use App\Models\Image;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
@@ -65,7 +67,7 @@ class EventController extends Controller
                 'code' => 404,
                 'status' => 'error',
                 'message' => 'Erreur dans l\'ajout de l\'événement',
-                'error' => $e,
+                'error' => $e->getMessage(),
             ]);
         }
     }
@@ -76,10 +78,14 @@ class EventController extends Controller
     public function show(Event $event)
     {
         try {
+            $images = Image::where('product_id', $event->id)
+                ->get();
+
             return response()->json([
                 'code' => 200,
                 'status' => 'success',
                 'data' => $event,
+                'image' => $images,
             ]);
         } catch (Exception $e) {
             return response()->json([
@@ -124,7 +130,7 @@ class EventController extends Controller
                 'code' => 404,
                 'status' => 'error',
                 'message' => 'Erreur dans la modification',
-                'error' => $e
+                'error' => $e->getMessage(),
             ]);
         }
     }
@@ -154,7 +160,7 @@ class EventController extends Controller
                 'code' => 404,
                 'status' => 'error',
                 'message' => 'Erreur dans la suppression',
-                'error' => $e
+                'error' => $e->getMessage(),
             ]);
         }
     }

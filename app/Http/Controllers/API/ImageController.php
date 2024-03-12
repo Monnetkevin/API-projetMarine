@@ -43,7 +43,7 @@ class ImageController extends Controller
                 'code' => 404,
                 'status' => 'error',
                 'message' => 'Erreur dans l\'ajout de l\'image',
-                'erroe' => $e,
+                'erroe' => $e->getMessage(),
             ]);
         }
     }
@@ -64,7 +64,7 @@ class ImageController extends Controller
                 'code' => 404,
                 'status' => 'error',
                 'message' => 'Erreur dans l\'affichage',
-                'error' => $e
+                'error' => $e->getMessage(),
             ]);
         }
     }
@@ -89,7 +89,7 @@ class ImageController extends Controller
                 'code' => 404,
                 'status' => 'succes',
                 'message' => 'Echec de la suppression',
-                'error' => $e,
+                'error' => $e->getMessage(),
             ]);
         }
     }

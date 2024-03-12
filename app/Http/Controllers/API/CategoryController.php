@@ -26,7 +26,7 @@ class CategoryController extends Controller
                 'code' => 404,
                 'status' => 'error',
                 'message' => 'Erreur dans les catégories',
-                'error' => $e
+                'error' => $e->getMessage(),
             ]);
         }
     }
@@ -60,7 +60,7 @@ class CategoryController extends Controller
                 'code' => 404,
                 'status' => 'error',
                 'message' => 'Erreur dans l\'ajout de la catégorie',
-                'error' => $e
+                'error' => $e->getMessage(),
             ]);
         }
     }
@@ -81,7 +81,7 @@ class CategoryController extends Controller
                 'code' => 404,
                 'status' => 'error',
                 'message' => 'Erreur dans l\'affichage',
-                'error' => $e
+                'error' => $e->getMessage(),
             ]);
         }
     }
@@ -116,7 +116,7 @@ class CategoryController extends Controller
                 'code' => 404,
                 'status' => 'error',
                 'message' => 'Erreur dans la modification',
-                'error' => $e
+                'error' => $e->getMessage(),
             ]);
         }
     }
@@ -146,7 +146,7 @@ class CategoryController extends Controller
                 'code' => 404,
                 'status' => 'error',
                 'message' => 'Erreur dans la suppression',
-                'error' => $e
+                'error' => $e->getMessage(),
             ]);
         }
     }

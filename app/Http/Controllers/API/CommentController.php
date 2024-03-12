@@ -86,7 +86,7 @@ class CommentController extends Controller
                 'code' => 404,
                 'status' => 'error',
                 'message' => 'Erreur dans l\'affichage',
-                'error' => $e
+                'error' => $e->getMessage(),
             ]);
         }
     }
@@ -97,7 +97,7 @@ class CommentController extends Controller
     public function update(Request $request, Comment $comment)
     {
         try {
-            if (Auth::user()->id === $comment->user_id) {
+            if (Auth::user()->id === $comment->user_id || Auth::user()->role_id === 2) {
                 $request->validate([
                     'comment_content' => 'required',
                     'event_id' => 'nullable',

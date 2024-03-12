@@ -67,6 +67,7 @@ Route::controller(EventController::class)->group(function () {
 // ROUTE PRODUCT
 Route::controller(ProductController::class)->group(function () {
     Route::get('/products', 'index');
+    Route::get('/products/last', 'lastProduct');
     Route::post('/products', 'store')->middleware('auth:api');
     Route::get('/products/{product}', 'show')->middleware('auth:api');
     Route::post('/products/{product}', 'update')->middleware('auth:api');

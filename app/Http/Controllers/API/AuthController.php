@@ -45,7 +45,7 @@ class AuthController extends Controller
                     'user' => $user,
                     'access_token' => [
                         'type' => 'Bearer',
-                        'expires_in' => auth()->factory()->getTTL() * 3600,
+                        'expires_in' => auth()->factory()->getTTL() * 7200,
                     ],
                 ],
             ]);
@@ -54,7 +54,7 @@ class AuthController extends Controller
                 'code' => 404,
                 'status' => 'error',
                 'message' => 'Erreur lors de l\'enregistrement',
-                'error' => $e
+                'error' => $e->getMessage(),
             ]);
         }
     }
@@ -96,7 +96,7 @@ class AuthController extends Controller
                 'code' => 404,
                 'status' => 'error',
                 'message' => 'Erreur dans la connexion',
-                'error' => $e,
+                'error' => $e->getMessage(),
             ]);
         }
     }
@@ -121,7 +121,7 @@ class AuthController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Erreur dans la déconnexion',
-                'error' => $e
+                'error' => $e->getMessage(),
             ], 404);
         }
     }
