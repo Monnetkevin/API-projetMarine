@@ -35,7 +35,34 @@ class CommentController extends Controller
                 'code' => 404,
                 'status' => 'error',
                 'message' => 'Erreur dans la liste des commentaires',
-                'error' => $e,
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function lastComment()
+    {
+        try {
+            $lastComments = DB::table('comments')
+                ->join('users', 'comments.user_id', '=', 'users.id')
+                ->leftJoin('products', 'comments.product_id', '=', 'products.id')
+                ->leftJoin('events', 'comments.event_id', '=', 'events.id')
+                ->select('comments.*', 'users.first_name', 'users.last_name', 'users.image_name', 'products.product_name', 'events.event_name')
+                ->latest()
+                ->take(3)
+                ->get();
+
+            return response()->json([
+                'code' => 200,
+                'status' => 'success',
+                'data' => $lastComments,
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'code' => 404,
+                'status' => 'error',
+                'message' => 'Erreur dans la liste des événements',
+                'error' => $e->getMessage(),
             ]);
         }
     }
@@ -65,7 +92,7 @@ class CommentController extends Controller
                 'code' => 404,
                 'status' => 'error',
                 'message' => 'Erreur dans l\'ajout du commentaire',
-                'error' => $e,
+                'error' => $e->getMessage(),
             ]);
         }
     }
@@ -122,7 +149,7 @@ class CommentController extends Controller
                 'code' => 404,
                 'status' => 'error',
                 'message' => 'Erreur dans la suppression',
-                'error' => $e,
+                'error' => $e->getMessage(),
             ]);
         }
     }

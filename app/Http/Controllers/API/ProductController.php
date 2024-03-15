@@ -22,16 +22,11 @@ class ProductController extends Controller
                 ->get()
                 ->toArray();
 
-            $lastProducts = Product::with(['images'])
-                ->latest()
-                ->take(3)
-                ->get();
-
             return response()->json([
                 'code' => 200,
                 'status' => 'success',
                 'data' => $products,
-                'lastProduct' => $lastProducts,
+
             ]);
         } catch (Exception $e) {
             return response()->json([
@@ -168,23 +163,23 @@ class ProductController extends Controller
         }
     }
 
-    // public function lastProduct()
-    // {
-    //     try {
-    //         $lastProducts = Product::with(['images'])->latest()->take(3)->get();
+    public function lastProduct()
+    {
+        try {
+            $lastProducts = Product::with(['images'])->latest()->take(3)->get();
 
-    //         return response()->json([
-    //             'code' => 200,
-    //             'status' => 'success',
-    //             'data' => $lastProducts,
-    //         ]);
-    //     } catch (Exception $e) {
-    //         return response()->json([
-    //             'code' => 404,
-    //             'status' => 'error',
-    //             'message' => 'Erreur dans la liste des événements',
-    //             'error' => $e->getMessage(),
-    //         ]);
-    //     }
-    // }
+            return response()->json([
+                'code' => 200,
+                'status' => 'success',
+                'data' => $lastProducts,
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'code' => 404,
+                'status' => 'error',
+                'message' => 'Erreur dans la liste des événements',
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
 }

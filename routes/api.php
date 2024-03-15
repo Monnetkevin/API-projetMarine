@@ -36,7 +36,7 @@ Route::controller(AuthController::class)->group(function () {
 Route::controller(CategoryController::class)->group(function () {
     Route::get('/categories', 'index');
     Route::post('/categories', 'store')->middleware('auth:api');
-    Route::get('/categories/{category}', 'show')->middleware('auth:api');
+    Route::get('/categories/{category}', 'show');
     Route::post('/categories/{category}', 'update')->middleware('auth:api');
     Route::delete('/categories/{category}', 'destroy')->middleware('auth:api');
 });
@@ -51,8 +51,9 @@ Route::controller(AddressController::class)->group(function () {
 // ROUTE COMMENT
 Route::controller(CommentController::class)->group(function () {
     Route::get('/comments', 'index');
+    Route::get('/comments/last', 'lastComment');
     Route::post('/comments', 'store')->middleware('auth:api');
-    Route::get('/comments/{comment}', 'show')->middleware('auth:api');
+    Route::get('/comments/{comment}', 'show');
     Route::post('/comments/{comment}', 'update')->middleware('auth:api');
     Route::delete('/comments/{comment}', 'destroy')->middleware('auth:api');
 });
@@ -60,7 +61,7 @@ Route::controller(CommentController::class)->group(function () {
 Route::controller(EventController::class)->group(function () {
     Route::get('/events', 'index');
     Route::post('/events', 'store')->middleware('auth:api');
-    Route::get('/events/{event}', 'show')->middleware('auth:api');
+    Route::get('/events/{event}', 'show');
     Route::post('/events/{event}', 'update')->middleware('auth:api');
     Route::delete('/events/{event}', 'destroy')->middleware('auth:api');
 });
@@ -69,7 +70,7 @@ Route::controller(ProductController::class)->group(function () {
     Route::get('/products', 'index');
     Route::get('/products/last', 'lastProduct');
     Route::post('/products', 'store')->middleware('auth:api');
-    Route::get('/products/{product}', 'show')->middleware('auth:api');
+    Route::get('/products/{product}', 'show');
     Route::post('/products/{product}', 'update')->middleware('auth:api');
     Route::delete('/products/{product}', 'destroy')->middleware('auth:api');
 });
