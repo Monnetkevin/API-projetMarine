@@ -130,4 +130,51 @@ class AuthController extends Controller
     {
         return response()->json(Auth::user());
     }
+
+    public function update(Request $request, User $user)
+    {
+        try {
+            if (Auth::user()->id === $user->id) {
+                $request->validate([
+                    'first_name' => 'min:2|max:50',
+                    'last_name' => 'min:2|max:50',
+                    'email' => 'email:rfc,dns|max:100',
+                    'phone_number' => 'size:10',
+                    'image_name' => 'image|mimes:jpeg,png,jpg,svg',
+                ]);
+
+                $filename = "";
+                if ($request->hasFile('image_name')) {
+                    $filenameWithExt = $request->file('image_name')->getClientOriginalName();
+                    $filenameWithoutExt = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                    $extension = $request->file('image_name')->getClientOriginalExtension();
+                    $filename = $filenameWithoutExt . '_' . time() . '.' . $extension;
+                    $request->file('image_name')->storeAs('public/uploads', $filename);
+                }
+
+
+                $user->update(array_merge($request->all(), ['image_name' => $filename]));
+
+                return response()->json([
+                    'code' => 201,
+                    'status' => 'success',
+                    'data' => $user,
+                    'message' => 'Mise à jour avec succès'
+                ]);
+            } else {
+                return response()->json([
+                    'code' => 401,
+                    'status' => 'error',
+                    'message' => 'Pas autorisé',
+                ]);
+            }
+        } catch (Exception $e) {
+            return response()->json([
+                'code' => 404,
+                'status' => 'error',
+                'message' => 'Erreur dans la modification',
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
 }

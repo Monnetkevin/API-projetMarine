@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
             $table->text('comment_content');
+            $table->boolean('is_active')->default(false);
             $table->timestamps();
 
             $table->foreignId('event_id')->on('events')->nullable()->constrained();

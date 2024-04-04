@@ -20,7 +20,12 @@ class CategoryController extends Controller
             $categories = DB::table('categories')
                 ->get()
                 ->toArray();
-            return response()->json($categories);
+            return response()->json([
+                'code' => 201,
+                'status' => 'success',
+                'data' => $categories,
+                'message' => 'Ajout de la catégorie avec succès'
+            ]);
         } catch (Exception $e) {
             return response()->json([
                 'code' => 404,

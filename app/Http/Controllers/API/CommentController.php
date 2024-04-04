@@ -77,6 +77,7 @@ class CommentController extends Controller
                 'comment_content' => 'required|min:10',
                 'event_id' => 'nullable',
                 'product_id' => 'nullable',
+
             ]);
 
             $comment = Comment::create(array_merge($request->all(), ['user_id' => Auth::user()->id]));
@@ -85,7 +86,7 @@ class CommentController extends Controller
                 'code' => 201,
                 'status' => 'success',
                 'data' => $comment,
-                'message' => 'Ajout de votre commentaire',
+                'message' => 'Ajout de votre commentaire pour validation',
             ]);
         } catch (Exception $e) {
             return response()->json([
@@ -127,8 +128,7 @@ class CommentController extends Controller
             if (Auth::user()->id === $comment->user_id || Auth::user()->role_id === 2) {
                 $request->validate([
                     'comment_content' => 'required',
-                    'event_id' => 'nullable',
-                    'product_id' => 'nullable',
+
                 ]);
                 $comment->update($request->all());
                 return response()->json([
@@ -148,7 +148,46 @@ class CommentController extends Controller
             return response()->json([
                 'code' => 404,
                 'status' => 'error',
-                'message' => 'Erreur dans la suppression',
+                'message' => 'Erreur dans la mise à jour',
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    /**
+     * Update the boolean to display the comment
+     */
+
+    public function commentIsValide(Request $request, Comment $comment)
+    {
+        //dd($request);
+        try {
+            if (Auth::user()->role_id === 2) {
+                $request->validate([
+                    'is_active' => 'required|boolean'
+                ]);
+
+                $comment->is_active = $request->input('is_active');
+                $comment->save();
+
+                return response()->json([
+                    'code' => 201,
+                    'status' => 'success',
+                    'data' => $comment,
+                    'message' => 'Mise à jour du commentaire avec succès'
+                ]);
+            } else {
+                return response()->json([
+                    'code' => 401,
+                    'status' => 'error',
+                    'message' => 'Pas autorisé',
+                ]);
+            }
+        } catch (Exception $e) {
+            return response()->json([
+                'code' => 404,
+                'status' => 'error',
+                'message' => 'Erreur dans la mise à jour',
                 'error' => $e->getMessage(),
             ]);
         }
