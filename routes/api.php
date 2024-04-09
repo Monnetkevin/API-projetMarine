@@ -9,6 +9,8 @@ use App\Http\Controllers\API\AddressController;
 use App\Http\Controllers\API\CommentController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\CategoryController;
+use App\Http\Controllers\API\ShopSessionController;
+use App\Models\ShopSession;
 
 /*
 |--------------------------------------------------------------------------
@@ -81,4 +83,10 @@ Route::controller(ImageController::class)->group(function () {
     Route::post('/images', 'store')->middleware('auth:api');
     Route::get('/images/{image}', 'show')->middleware('auth:api');
     Route::delete('/images/{image}', 'destroy')->middleware('auth:api');
+});
+// ROUTE SHOPSESSION
+Route::controller(ShopSessionController::class)->group(function () {
+    Route::get('/shop', 'index')->middleware('auth:api');
+    Route::post('/shop/add', 'store')->middleware('auth:api');
+    Route::post('/shop/addToShop', 'addToShop')->middleware('auth:api');
 });

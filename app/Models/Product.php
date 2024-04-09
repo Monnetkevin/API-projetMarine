@@ -15,6 +15,7 @@ class Product extends Model
         'price',
         'quantity',
         'category_id',
+        'stripe_id'
     ];
 
     public function category()
@@ -30,5 +31,9 @@ class Product extends Model
     public function images()
     {
         return $this->hasMany(Image::class);
+    }
+    public function shopSessions()
+    {
+        return $this->belongsToMany(ShopSession::class, 'products_shop_sessions', 'product_id', 'shopSession_id');
     }
 }

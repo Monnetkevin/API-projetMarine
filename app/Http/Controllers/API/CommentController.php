@@ -17,7 +17,6 @@ class CommentController extends Controller
     public function index()
     {
         try {
-
             $comment = DB::table('comments')
                 ->join('users', 'comments.user_id', '=', 'users.id')
                 ->leftJoin('products', 'comments.product_id', '=', 'products.id')
@@ -73,21 +72,29 @@ class CommentController extends Controller
     public function store(Request $request)
     {
         try {
-            $request->validate([
-                'comment_content' => 'required|min:10',
-                'event_id' => 'nullable',
-                'product_id' => 'nullable',
+            if (Auth::user()) {
+                $request->validate([
+                    'comment_content' => 'required|min:10',
+                    'event_id' => 'nullable',
+                    'product_id' => 'nullable',
 
-            ]);
+                ]);
 
-            $comment = Comment::create(array_merge($request->all(), ['user_id' => Auth::user()->id]));
+                $comment = Comment::create(array_merge($request->all(), ['user_id' => Auth::user()->id]));
 
-            return response()->json([
-                'code' => 201,
-                'status' => 'success',
-                'data' => $comment,
-                'message' => 'Ajout de votre commentaire pour validation',
-            ]);
+                return response()->json([
+                    'code' => 201,
+                    'status' => 'success',
+                    'data' => $comment,
+                    'message' => 'Ajout de votre commentaire pour validation',
+                ]);
+            } else {
+                return response()->json([
+                    'code' => 401,
+                    'status' => 'error',
+                    'message' => 'Pas autorisé',
+                ]);
+            }
         } catch (Exception $e) {
             return response()->json([
                 'code' => 404,
