@@ -29,7 +29,7 @@ class ProductController extends Controller
             ]);
         } catch (Exception $e) {
             return response()->json([
-                'code' => 404,
+                'code' => 400,
                 'status' => 'error',
                 'message' => 'Erreur dans la liste des événements',
                 'error' => $e->getMessage(),
@@ -55,7 +55,6 @@ class ProductController extends Controller
                 $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
                 $stripes = $stripe->products->create([
                     'name' => $request->product_name,
-                    'description' => $request->product_content,
                     'tax_code' => 'txcd_35010000',
                     'default_price_data' =>
                     [
@@ -64,7 +63,7 @@ class ProductController extends Controller
                     ],
                 ]);
 
-                $product = Product::create(array_merge($request->all(), ['stripe_id' => $stripes->id]));
+                $product = Product::create(array_merge($request->all(), ['stripe_id' => $stripes->id, 'stripe_price' => $stripes->default_price]));
 
                 return response()->json([
                     'code' => 201,
@@ -82,7 +81,7 @@ class ProductController extends Controller
             }
         } catch (Exception $e) {
             return response()->json([
-                'code' => 404,
+                'code' => 400,
                 'status' => 'error',
                 'message' => 'Erreur dans l\'ajout',
                 'error' => $e->getMessage(),
@@ -108,7 +107,7 @@ class ProductController extends Controller
             ]);
         } catch (Exception $e) {
             return response()->json([
-                'code' => 404,
+                'code' => 400,
                 'status' => 'error',
                 'message' => 'Erreur dans l\'affichage',
                 'error' => $e->getMessage()
@@ -147,7 +146,7 @@ class ProductController extends Controller
             }
         } catch (Exception $e) {
             return response()->json([
-                'code' => 404,
+                'code' => 400,
                 'status' => 'error',
                 'message' => 'Erreur dans la modification',
                 'error' => $e->getMessage(),
@@ -164,6 +163,7 @@ class ProductController extends Controller
             if (Auth::user()->role_id === 2) {
                 $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
                 $stripe->products->update($product->stripe_id, ['active' => false]);
+
                 $product->delete();
 
                 return response()->json([

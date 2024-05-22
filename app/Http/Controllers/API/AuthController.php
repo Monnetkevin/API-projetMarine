@@ -51,7 +51,7 @@ class AuthController extends Controller
             ]);
         } catch (Exception $e) {
             return response()->json([
-                'code' => 404,
+                'code' => 400,
                 'status' => 'error',
                 'message' => 'Erreur lors de l\'enregistrement',
                 'error' => $e->getMessage(),

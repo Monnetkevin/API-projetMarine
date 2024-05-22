@@ -10,7 +10,8 @@ use App\Http\Controllers\API\CommentController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\ShopSessionController;
-use App\Models\ShopSession;
+use App\Http\Controllers\StripeController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -29,8 +30,8 @@ use App\Models\ShopSession;
 
 // ROUTE AUTH
 Route::controller(AuthController::class)->group(function () {
-    Route::post('/register', 'register');
-    Route::post('/login', 'login');
+    Route::post('/register', 'register')->middleware('auth:guest');
+    Route::post('/login', 'login')->middleware('guest');
     Route::get('/currentUser', 'currentUser')->middleware('auth:api');
     Route::post('/logout', 'logout')->middleware('auth:api');
     Route::patch('/users/{user}', 'update')->middleware('auth:api');
@@ -86,7 +87,16 @@ Route::controller(ImageController::class)->group(function () {
 });
 // ROUTE SHOPSESSION
 Route::controller(ShopSessionController::class)->group(function () {
-    Route::get('/shop', 'index')->middleware('auth:api');
-    Route::post('/shop/add', 'store')->middleware('auth:api');
-    Route::post('/shop/addToShop', 'addToShop')->middleware('auth:api');
+    Route::get('/shops', 'index')->middleware('auth:api');
+    Route::post('/shops/add', 'store')->middleware('auth:api');
+    Route::get('/shops/{user}', 'show')->middleware('auth:api');
+    Route::post('/shops/addToShop', 'addToShop')->middleware('auth:api');
+    Route::post('/shops/removeProductShop', 'removeProductShop')->middleware('auth:api');
+    Route::put('/shops/{shopSession}', 'update')->middleware('auth:api');
+});
+
+// ROUTE STRIPE
+Route::controller(StripeController::class)->group(function () {
+    Route::post('/stripes/checkout/{shopSession}', 'checkout')->middleware('auth:api');
+    Route::post('/stripes/webhook', 'webhook');
 });

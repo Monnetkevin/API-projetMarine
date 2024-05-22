@@ -20,7 +20,6 @@ class ProductSeeder extends Seeder
             'product_content' => 'Rosa est la cheffe d\'un cartel de la drogue à Véra Cruz. Adriana est agent de police. L\'une est cruelle, dénuée d\'âme et sauvage, l\'autre est bienveillante, attentionnée et douce. Alors qu\'elles n\'ont absolument rien en commun, elle vont, petit à petit, intégrer chacune le monde de l\'autre et réaliser qu\'elles se ressemblent peut-être plus qu\'elles veulent le croire.',
             'price' => 19,
             'quantity' => 10,
-            // 'user_id' => 1,
             'category_id' => 1,
         ]);
     }

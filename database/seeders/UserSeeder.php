@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
             'password' => bcrypt('azerty'),
             'role_id' => 2,
             'phone_number' => '0630206332',
-            'image_name' => 'default_avatar.png',
+            'image_name' => 'default_avatar.jpg',
         ]);
 
         // USER
@@ -32,7 +32,7 @@ class UserSeeder extends Seeder
             'password' => bcrypt('azerty'),
             'role_id' => 1,
             'phone_number' => '0606060606',
-            'image_name' => 'default_avatar.png',
+            'image_name' => 'default_avatar.jpg',
         ]);
     }
 }

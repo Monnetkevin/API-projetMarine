@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('shop_sessions', function (Blueprint $table) {
-            $table->id();
-            $table->decimal('total', 14, 2);
-            $table->foreignId('user_id')->on('users');
-            $table->boolean('active');
-            $table->timestamps();
+        Schema::table('products', function (Blueprint $table) {
+            $table->string('stripe_price');
         });
     }
 
@@ -25,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('shop_sessions');
+        Schema::table('products', function (Blueprint $table) {
+            //
+        });
     }
 };
