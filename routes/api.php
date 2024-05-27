@@ -31,7 +31,7 @@ use App\Http\Controllers\StripeController;
 // ROUTE AUTH
 Route::controller(AuthController::class)->group(function () {
     Route::post('/register', 'register')->middleware('auth:guest');
-    Route::post('/login', 'login')->middleware('guest');
+    Route::post('/login', 'login')->middleware('auth:guest');
     Route::get('/currentUser', 'currentUser')->middleware('auth:api');
     Route::post('/logout', 'logout')->middleware('auth:api');
     Route::patch('/users/{user}', 'update')->middleware('auth:api');
@@ -56,7 +56,7 @@ Route::controller(AddressController::class)->group(function () {
 Route::controller(CommentController::class)->group(function () {
     Route::get('/comments', 'index');
     Route::get('/comments/last', 'lastComment');
-    Route::post('/comments', 'store')->middleware('auth:api');
+    Route::post('/comments', 'store');
     Route::get('/comments/{comment}', 'show');
     Route::put('/comments/{comment}', 'update')->middleware('auth:api');
     Route::put('/comments/{comment}', 'commentIsValide')->middleware('auth:api');
@@ -74,7 +74,7 @@ Route::controller(EventController::class)->group(function () {
 Route::controller(ProductController::class)->group(function () {
     Route::get('/products', 'index');
     Route::get('/products/last', 'lastProduct');
-    Route::post('/products', 'store')->middleware('auth:api');
+    Route::post('/products', 'store');
     Route::get('/products/{product}', 'show');
     Route::put('/products/{product}', 'update')->middleware('auth:api');
     Route::delete('/products/{product}', 'destroy')->middleware('auth:api');

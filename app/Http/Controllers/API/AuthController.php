@@ -33,7 +33,7 @@ class AuthController extends Controller
                 'phone_number' => $request['phone_number'],
                 'password' => bcrypt($request['password']),
                 'image_name' => 'default_avatar.jpg',
-                // 'image_name' => Avatar::create($request->first_name, $request->last_name)->toBase64(),
+
             ]);
             return response()->json([
                 'meta' => [
